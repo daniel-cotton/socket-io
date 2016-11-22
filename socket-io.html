@@ -1,0 +1,46 @@
+<link rel="import" href="../polymer/polymer.html">
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
+<!--
+`socket-io`
+Polymer 1.0 element for socket.io apis
+
+@demo demo/index.html
+-->
+
+<dom-module id="socket-io">
+  <template>
+    {{socketUrl}} {{onMessage}}
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'socket-io',
+
+      properties: {
+        socketUrl: {
+          type: String,
+          value: 'http://localhost:8080',
+        },
+        onMessage: {
+          type: String,
+          value: 'preset',
+        },
+        events: {
+          type: String,
+          value: 'preset',
+        }
+      },
+      ready: function(){
+        var socket = io(this.socketUrl);
+        socket.on('news', function (data) {
+          console.log(data);
+          socket.emit('my other event', { my: 'data' });
+        });
+
+      }
+
+    });
+  </script>
+</dom-module>
