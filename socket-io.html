@@ -19,27 +19,98 @@ Polymer 1.0 element for socket.io apis
       is: 'socket-io',
 
       properties: {
-        socketUrl: {
+        endpoint: {
           type: String,
-          value: 'http://localhost:8080',
+          value: 'http://localhost:8080'
         },
-        onMessage: {
+        namespace: {
           type: String,
-          value: 'preset',
+          value: '/'
+        },
+        autoReconnect: {
+          type: bool,
+          value: true
+        },
+        isConnected: {
+          type: bool,
+          value: null
+        },
+        outMessage: {
+          type: Object,
+          value: null
         },
         events: {
-          type: String,
-          value: 'preset',
+          type: Array,
+          value: ["messages"]
         }
       },
       ready: function(){
-        var socket = io(this.socketUrl);
-        socket.on('news', function (data) {
-          console.log(data);
-          socket.emit('my other event', { my: 'data' });
-        });
+      },
 
-      }
+      /**
+       * The emit method sends an event with 'payload' as content
+       *
+       * @method emit
+       * @param {String} event event to send
+       * @param {Object} payload the json data to send
+       */
+      emit: function(event, data)
+	    {
+			  try
+			  {
+				  if(this.socket) this.socket.emit(event, data);
+			  }catch(error)
+			  {
+				  console.log("Failed to send message: "+error);
+			  }
+      },
+      /**
+       * Update the message within state
+       *
+       * @method message
+       */
+      _updateMessage: function(message){
+        if(typeof message !== "object"){
+          this.outMessage = {message: message};
+        } else{
+          this.outMessage = message;
+        }
+      },
+      /**
+       * The connect method triggers connection to the socket.io server
+       *
+       * @method connect
+       */
+	    connect:function()
+	    {
+		    this.disconnect();
+        this.socket = io(this.socketUrl);
+        this.isConnected = true;
+        var ths = this;
+        this.socket.events.forEach(function(event){
+          ths.socket.on(event, function (data) {
+            ths._updateMessage(data);
+          });
+        });
+	    },
+	    /**
+       * The disconnect method triggers disconnection from the socket.io server
+       *
+       * @method disconnect
+       */
+	    disconnect:function()
+	    {
+		    if (this.socket != undefined && !this.isConnected)
+		    {
+          try{
+            this.socket.disconnect();
+            this.isConnected = false;
+          }
+          catch(error){
+            this.onError(error);
+          }
+        }
+	    },
 
     });
   </script>
