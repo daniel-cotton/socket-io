@@ -20,24 +20,26 @@
       <h3>Basic socket-io demo</h3>
       <demo-snippet>
         <template is="dom-bind" id="demo-dom">
-          <socket-io socket-url="http://beacon-display.eu-gb.mybluemix.net/" on-load="loaded()" events="[[events]]"></socket-io>
+          <p>Is Connected: {{isConnected}}</p>
+          <socket-io id="socket" endpoint="https://socket-io-tester.herokuapp.com/" events="[[events]]" is-connected={{isConnected}}></socket-io>
         </template>
       </demo-snippet>
     </div>
     <script>
+    var demo = document.querySelector('#demo-dom');
     window.addEventListener('WebComponentsReady', function(e) {
-        var demo = document.querySelector('#demo-dom');
-        demo.events = [];
-        demo.events.push({
-          event: 'userInteraction',
-          onEvent: function(data){
-            console.log(data);
-          }
-        })
-        var socket = Polymer.dom(demo.root);
-        console.log(socket);
-        socket.$.socket.connect();
-        socket.$.socket.emit('join','room1');
+      demo.events = [];
+      demo.events.push({
+        event: 'userInteraction',
+        onEvent: function(data){
+          console.log(data);
+        }
+      })
+      var socket = Polymer.dom(demo);
+      console.log(socket);
+      socket.node.$.socket.connect();
+      socket.node.$.socket.emit('join','room1');
+      //demo.isConnected = socket.node.$.socket.isConnected;
     });
     </script>
   </body>

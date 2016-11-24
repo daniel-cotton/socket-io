@@ -5,31 +5,49 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>socket-io test</title>
-
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
-
+    <!--<link rel="import" href="../bower_components/iron-ajax/iron-request.html">-->
     <link rel="import" href="../socket-io.html">
   </head>
   <body>
     <test-fixture id="basic">
-      <template is="dom-template">
-        <socket-io id="socket" socket-url="http://beacon-display.eu-gb.mybluemix.net/" events="[[events]]"></socket-io>
+      <template>
+        <socket-io id="socket" endpoint="https://socket-io-tester.herokuapp.com/" events="[[events]]" is-connected={{isConnected}}></socket-io>
       </template>
     </test-fixture>
 
     <script>
       suite('socket-io', function() {
         test('instantiating the element works', function() {
-          var element = fixture('basic', {events:[{
-            event: 'userInteraction',
-            onEvent: function(data){
-              console.log(data);
-            }
-          }]
+          var element = fixture('basic');
+            assert.equal(element.is, 'socket-io');
+            element.events = [{
+              event: 'roomMsg',
+              onEvent: function(data){
+                assert.equal(data.test,"room");
+                console.log(data);
+                element.responseBack = true;
+              }
+            }];
+            element.connect();
+            element.emit('join', 'rm1');
+          var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+          xmlhttp.open("POST", "https://socket-io-tester.herokuapp.com/message/room/rm1");
+          xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          xmlhttp.send(JSON.stringify({ test: "room"}));
+          setTimeout(function(){
+            assert.equal(element.responseBack, true);
+          }, 3000);
+          /*element.$.socket.xhr.send({url: 'https://socket-io-tester.herokuapp.com/message/room/rm1', method: 'POST', body: })
+          .then(function(data){
+            assert.equal(data.status, "Emitted");
+            setTimeout(function(){
+              assert.equal(element.responseBack, true);
+            }, 3000);
+          });*/
         });
-          assert.equal(element.$.socket, 'socket-io');
-        });
+
       });
     </script>
   </body>
