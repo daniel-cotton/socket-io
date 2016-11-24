@@ -10,7 +10,6 @@ Polymer 1.0 element for socket.io apis
 
 <dom-module id="socket-io">
   <template>
-    {{socketUrl}} {{onMessage}}
   </template>
 
   <script>
@@ -55,7 +54,9 @@ Polymer 1.0 element for socket.io apis
       },
       ready: function(){
         console.log("Connection In Progress");
-        this.loaded();
+        if(this.loaded){
+          this.loaded();
+        }
       },
 
       /**
@@ -96,7 +97,7 @@ Polymer 1.0 element for socket.io apis
 	    {
         console.log('Connection in progress');
 		    this.disconnect();
-        this.socket = io.connect(this.socketUrl);
+        this.socket = io.connect(this.endpoint);
         var ths = this;
         this.isConnected = true;
         this.events.forEach(function(event){
