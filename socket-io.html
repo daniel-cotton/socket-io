@@ -28,23 +28,34 @@ Polymer 1.0 element for socket.io apis
           value: '/'
         },
         autoReconnect: {
-          type: bool,
+          type: Boolean,
           value: true
         },
         isConnected: {
-          type: bool,
+          type: Boolean,
           value: null
         },
         outMessage: {
           type: Object,
           value: null
         },
+        loaded: {
+          type: Function
+        },
+        /**
+        * Array with child objects - two properties.
+        * event (name of event to trigger on) and onEvent (a callback function).
+        */
         events: {
           type: Array,
-          value: ["messages"]
+          value: [{ event: "onConnect", onEvent: function(data){
+            console.log("connected");
+          }}]
         }
       },
       ready: function(){
+        console.log("Connection In Progress");
+        this.loaded();
       },
 
       /**
@@ -81,16 +92,15 @@ Polymer 1.0 element for socket.io apis
        *
        * @method connect
        */
-	    connect:function()
+	    connect: function()
 	    {
+        console.log('Connection in progress');
 		    this.disconnect();
-        this.socket = io(this.socketUrl);
-        this.isConnected = true;
+        this.socket = io.connect(this.socketUrl);
         var ths = this;
-        this.socket.events.forEach(function(event){
-          ths.socket.on(event, function (data) {
-            ths._updateMessage(data);
-          });
+        this.isConnected = true;
+        this.events.forEach(function(event){
+          ths.socket.on(event.event, event.onEvent);
         });
 	    },
 	    /**

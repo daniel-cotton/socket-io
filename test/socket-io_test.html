@@ -13,16 +13,22 @@
   </head>
   <body>
     <test-fixture id="basic">
-      <template>
-        <socket-io></socket-io>
+      <template is="dom-template">
+        <socket-io id="socket" socket-url="http://beacon-display.eu-gb.mybluemix.net/" events="[[events]]"></socket-io>
       </template>
     </test-fixture>
 
     <script>
       suite('socket-io', function() {
         test('instantiating the element works', function() {
-          var element = fixture('basic');
-          assert.equal(element.is, 'socket-io');
+          var element = fixture('basic', {events:[{
+            event: 'userInteraction',
+            onEvent: function(data){
+              console.log(data);
+            }
+          }]
+        });
+          assert.equal(element.$.socket, 'socket-io');
         });
       });
     </script>

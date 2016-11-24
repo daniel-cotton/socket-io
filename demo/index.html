@@ -19,10 +19,26 @@
     <div class="vertical-section-container centered">
       <h3>Basic socket-io demo</h3>
       <demo-snippet>
-        <template>
-          <socket-io socket-url="http://bluemix"></socket-io>
+        <template is="dom-bind" id="demo-dom">
+          <socket-io socket-url="http://beacon-display.eu-gb.mybluemix.net/" on-load="loaded()" events="[[events]]"></socket-io>
         </template>
       </demo-snippet>
     </div>
+    <script>
+    window.addEventListener('WebComponentsReady', function(e) {
+        var demo = document.querySelector('#demo-dom');
+        demo.events = [];
+        demo.events.push({
+          event: 'userInteraction',
+          onEvent: function(data){
+            console.log(data);
+          }
+        })
+        var socket = Polymer.dom(demo.root);
+        console.log(socket);
+        socket.$.socket.connect();
+        socket.$.socket.emit('join','room1');
+    });
+    </script>
   </body>
 </html>
