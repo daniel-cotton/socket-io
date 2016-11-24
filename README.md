@@ -1,6 +1,6 @@
 # \<socket-io\>
 
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/owner/my-element)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/daniel-cotton/socket-io)
 
 
 Polymer 1.0 element for socket.io apis.
@@ -23,7 +23,8 @@ Demo/Docs available @ https://daniel-cotton.github.io/socket-io/
 ```
 
 
-## To use the element
+
+# To use the element
 
 Firstly - install via Bower.
 
