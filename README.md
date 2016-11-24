@@ -1,6 +1,11 @@
 # \<socket-io\>
 
-Polymer 1.0 element for socket.io apis
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/owner/my-element)
+
+
+Polymer 1.0 element for socket.io apis.
+
+Demo/Docs available @ https://daniel-cotton.github.io/socket-io/
 
 <!---
 ```
@@ -14,40 +19,33 @@ Polymer 1.0 element for socket.io apis
 ```
 -->
 ```html
-<socket-io id="socket" socket-url="http://beacon-display.eu-gb.mybluemix.net/" events="[[events]]"></socket-io>
+<socket-io id="socket" endpoint="https://socket-io-tester.herokuapp.com/" events="[[events]]"></socket-io>
 ```
 
-## Install the Polymer-CLI
+
+## To use the element
+
+Firstly - install via Bower.
+
+    bower install --save daniel-cotton/socket-io
+    
+Then import into your Polymer project
+
+```html
+<link rel="import" href="../bower_components/socket-io/socket-io.html">
+```
+
+
+# To Build
+
+### Install the Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
 
-## Viewing Your Application
-
-```
-$ polymer serve
-```
-
-## Building Your Application
-
-```
-$ polymer build
-```
-
-This will create a `build/` folder with `bundled/` and `unbundled/` sub-folders
-containing a bundled (Vulcanized) and unbundled builds, both run through HTML,
-CSS, and JS optimizers.
-
-You can serve the built versions by giving `polymer serve` a folder to serve
-from:
-
-```
-$ polymer serve build/bundled
-```
-
-## Running Tests
+### Running Tests
 
 ```
 $ polymer test
 ```
 
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+This component can be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
