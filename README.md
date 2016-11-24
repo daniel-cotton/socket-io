@@ -2,6 +2,21 @@
 
 Polymer 1.0 element for socket.io apis
 
+<!---
+```
+<custom-element-demo>
+  <template>
+    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="socket.io.html">
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
+```
+-->
+```html
+<socket-io id="socket" socket-url="http://beacon-display.eu-gb.mybluemix.net/" events="[[events]]"></socket-io>
+```
+
 ## Install the Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
