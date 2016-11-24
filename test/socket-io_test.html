@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>socket-io test</title>
-
+    <link rel="import" href="../bower_components/test-fixture/test-fixture.html">
     <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../bower_components/web-component-tester/browser.js"></script>
     <link rel="import" href="../bower_components/iron-ajax/iron-request.html">
@@ -13,7 +13,7 @@
   </head>
   <body>
     <test-fixture id="basic">
-      <template is="dom-template">
+      <template>
         <socket-io id="socket" endpoint="https://socket-io-tester.herokuapp.com/" events="[[events]]" is-connected={{isConnected}}></socket-io>
         <iron-request id="xhr"></iron-request>
       </template>
@@ -29,7 +29,7 @@
               console.log(data);
               element.responseBack = true;
             }
-          }];
+          }]});
             assert.equal(element.$.socket, 'socket-io');
             element.$.socket.connect();
             element.$.socket.emit('join', 'rm1');
