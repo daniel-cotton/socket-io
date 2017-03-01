@@ -1,0 +1,17 @@
+<script>
+  /** @polymerBehavior SocketIOBehavior */
+  const SocketIOBehavior = {
+    ready: function() {
+      this._socketRef = document.querySelector('socket-io');
+    },
+    connectToSocketServer: function() {
+      this._socketRef.connect();
+    },
+    disconnectFromSocketServer: function() {
+      this._socketRef.disconnect();
+    },
+    registerNewEvents: function(_events) {
+      this._socketRef.registerEvents(_events);
+    }
+  };
+</script>
