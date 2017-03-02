@@ -1,0 +1,53 @@
+<script>
+  /** @polymerBehavior SocketIOBehavior */
+  const SocketIOBehavior = {
+    ready: function() {
+      this.socket._socketRef = document.querySelector('socket-io');
+      if (this.socket._socketRef === null) {
+        console.log('Socket behavior was unable to find socket-io element');
+      }
+    },
+
+    socket: {
+      _socketRef: null,
+      /**
+       * The socket.connect method triggers connection to the socket.io server
+       *
+       * @method socket.connect
+       */
+      connect: function() {
+        this._socketRef.connect();
+      },
+      /**
+       * The socket.disconnect method triggers disconnection from the socket.io server
+       *
+       * @method socket.disconnect
+       */
+      disconnect: function() {
+        this._socketRef.disconnect();
+      },
+      /**
+       * The socket.registerEvents method registeres new events to be handled
+       *
+       * @method socket.registerEvents
+       * @param {array} events - an array of events to registerEvents
+       * @param {string} eventArr[].event - name of the event 
+       * @param {function} eventArr[].onEvent - Function to be called when event is triggered
+       */
+      registerEvents: function(events) {
+        this._socketRef.registerEvents(events);
+      },
+      /**
+       * The socket.emit method sends an event with 'payload' as content and allows optional compression
+       *
+       * @method socket.emit
+       * @param {String} event event to send
+       * @param {Object} payload the json data to send
+       * @param {Boolean} compres the event
+       */
+      emit: function(event, data, compress) {
+        this._socketRef.emit(event, data, compress);
+      }
+    }
+  };
+</script>

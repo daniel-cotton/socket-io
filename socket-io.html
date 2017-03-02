@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
-<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="../socket.io-client/dist/socket.io.min.js"></script>
+<!--<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>-->
 
 <!--
 `socket-io`
@@ -48,17 +49,18 @@ Polymer 1.0 element for socket.io apis
       },
 
       /**
-       * The emit method sends an event with 'payload' as content
+       * The emit method sends an event with 'payload' as content and allows optional compression
        *
        * @method emit
        * @param {String} event event to send
        * @param {Object} payload the json data to send
+       * @param {Boolean} compres the event
        */
-      emit: function(event, data)
+      emit: function(event, data, compress)
 	    {
 			  try
 			  {
-				  if(this.socket) this.socket.emit(event, data);
+          if(this.socket) this.socket.compress(compress).emit(event, data);
 			  }catch(error)
 			  {
 				  console.log("Failed to send message: "+error);
@@ -110,7 +112,22 @@ Polymer 1.0 element for socket.io apis
           }
         }
 	    },
-
+      /**
+       * Register extra events 
+       *
+       * @method registerEvents
+       * @param {array} events - an array of events to registerEvents
+       * @param {string} eventArr[].event - name of the event 
+       * @param {function} eventArr[].onEvent - Function to be called when event is triggered
+       */
+      registerEvents: function(events)
+      {
+        var ths = this;
+        events.forEach(function(event){
+          const index = (ths.events.push(event) - 1);
+          ths.socket.on(ths.events[index].event, ths.events[index].onEvent);
+        });
+      },
     });
   </script>
 </dom-module>

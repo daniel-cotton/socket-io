@@ -3,12 +3,14 @@
   "description": "Polymer 1.0 element for socket.io apis",
   "main": "socket-io.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0"
+    "polymer": "Polymer/polymer#^1.4.0",
+    "socket.io-client": "https://github.com/socketio/socket.io-client.git#1.7.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
     "web-component-tester": "^4.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
-  }
+  },
+  "ignore": []
 }
