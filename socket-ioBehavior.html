@@ -3,6 +3,9 @@
   const SocketIOBehavior = {
     ready: function() {
       this._socketRef = document.querySelector('socket-io');
+      if (this.socketRef === null) {
+        console.log('Socket behavior was unable to find socket-io element');
+      }
     },
     connectToSocketServer: function() {
       this._socketRef.connect();
@@ -12,6 +15,9 @@
     },
     registerNewEvents: function(_events) {
       this._socketRef.registerEvents(_events);
+    },
+    emit: function(_event, _data, _compress) {
+      this._socketRef.emit(_event, _data, _compress);
     }
   };
 </script>
