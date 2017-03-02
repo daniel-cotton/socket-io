@@ -2,12 +2,13 @@
   /** @polymerBehavior SocketIOBehavior */
   const SocketIOBehavior = {
     ready: function() {
-      this._socketRef = document.querySelector('socket-io');
-      if (this.socketRef === null) {
+      this.socket._socketRef = document.querySelector('socket-io');
+      if (this.socket._socketRef === null) {
         console.log('Socket behavior was unable to find socket-io element');
       }
     },
     socket: {
+      _socketRef: null,
       connect: function() {
         this._socketRef.connect();
       },
