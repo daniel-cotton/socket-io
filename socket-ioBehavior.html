@@ -7,17 +7,19 @@
         console.log('Socket behavior was unable to find socket-io element');
       }
     },
-    connectToSocketServer: function() {
-      this._socketRef.connect();
-    },
-    disconnectFromSocketServer: function() {
-      this._socketRef.disconnect();
-    },
-    registerNewEvents: function(_events) {
-      this._socketRef.registerEvents(_events);
-    },
-    emit: function(_event, _data, _compress) {
-      this._socketRef.emit(_event, _data, _compress);
+    socket: {
+      connect: function() {
+        this._socketRef.connect();
+      },
+      disconnect: function() {
+        this._socketRef.disconnect();
+      },
+      registerEvents: function(_events) {
+        this._socketRef.registerEvents(_events);
+      },
+      emit: function(_event, _data, _compress) {
+        this._socketRef.emit(_event, _data, _compress);
+      }
     }
   };
 </script>
