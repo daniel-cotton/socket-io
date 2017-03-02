@@ -49,7 +49,7 @@ Polymer 1.0 element for socket.io apis
       },
 
       /**
-       * The emit method sends an event with 'payload' as content
+       * The emit method sends an event with 'payload' as content and allows optional compression
        *
        * @method emit
        * @param {String} event event to send
@@ -116,9 +116,9 @@ Polymer 1.0 element for socket.io apis
        * Register extra events 
        *
        * @method registerEvents
-       * @param events - an array of events to registerEvents
-       * @param eventArr[].event - name of the event 
-       * @param eventArr[].onEvent - Function to be called when event is triggered
+       * @param {array} events - an array of events to registerEvents
+       * @param {string} eventArr[].event - name of the event 
+       * @param {function} eventArr[].onEvent - Function to be called when event is triggered
        */
       registerEvents: function(events)
       {
