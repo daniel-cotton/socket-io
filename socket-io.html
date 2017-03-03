@@ -1,6 +1,4 @@
 <link rel="import" href="../polymer/polymer.html">
-<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-
 <!--
 `socket-io`
 Polymer 1.0 element for socket.io apis
@@ -30,9 +28,9 @@ Polymer 1.0 element for socket.io apis
           type: Function
         },
         /**
-        * Array with child objects - two properties.
-        * event (name of event to trigger on) and onEvent (a callback function).
-        */
+         * Array with child objects - two properties.
+         * event (name of event to trigger on) and onEvent (a callback function).
+         */
         events: {
           type: Array,
           value: [{ event: "onConnect", onEvent: function(data){
@@ -42,9 +40,46 @@ Polymer 1.0 element for socket.io apis
       },
       ready: function(){
         console.log("Connection In Progress");
+        var head = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.src = this._getClientUrl(this.endpoint);
+
+        // Handle Script loading
+        var done = false;
+
+        // Attach handlers for all browsers
+        var _this = this;
+        script.onload = script.onreadystatechange = function() {
+          if ( !done && (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") ) {
+            done = true;
+
+            _this.scriptLoaded = true;
+            console.log('Finished Loading Socket-IO Script');
+            if (_this.awaitingConnect) {
+              console.log("Connecting Socket");
+              _this.connect();
+            }
+            // Handle memory leak in IE
+            script.onload = script.onreadystatechange = null;
+            if ( head && script.parentNode ) {
+              head.removeChild( script );
+            }
+          }
+        };
+
+        // Use insertBefore instead of appendChild  to circumvent an IE6 bug.
+        // This arises when a base node is used (#2709 and #4378).
+        head.insertBefore( script, head.firstChild );
+
         if(this.loaded){
           this.loaded();
         }
+      },
+      _getClientUrl: function (endpoint) {
+        if (endpoint.slice(-1) === '/') {
+          return endpoint + 'socket.io/socket.io.js';
+        }
+        return endpoint + '/socket.io/socket.io.js';
       },
 
       /**
@@ -55,14 +90,14 @@ Polymer 1.0 element for socket.io apis
        * @param {Object} payload the json data to send
        */
       emit: function(event, data)
-	    {
-			  try
-			  {
-				  if(this.socket) this.socket.emit(event, data);
-			  }catch(error)
-			  {
-				  console.log("Failed to send message: "+error);
-			  }
+      {
+        try
+        {
+          if(this.socket) this.socket.emit(event, data);
+        }catch(error)
+        {
+          console.log("Failed to send message: "+error);
+        }
       },
       /**
        * Update the message within state
@@ -81,26 +116,32 @@ Polymer 1.0 element for socket.io apis
        *
        * @method connect
        */
-	    connect: function()
-	    {
+      connect: function()
+      {
+        var _this = this;
         console.log('Connection in progress');
-		    this.disconnect();
-        this.socket = io.connect(this.endpoint);
-        var ths = this;
-        this.isConnected = true;
-        this.events.forEach(function(event){
-          ths.socket.on(event.event, event.onEvent);
-        });
-	    },
-	    /**
+        if (this.scriptLoaded) {
+          console.log("Ok, connect the socket.");
+          this.disconnect();
+          this.socket = io.connect(this.endpoint);
+          this.isConnected = true;
+          this.events.forEach(function(event){
+            _this.socket.on(event.event, event.onEvent);
+          });
+        } else {
+          console.log('Loading ClientSideScript');
+          this.awaitingConnect = true;
+        }
+      },
+      /**
        * The disconnect method triggers disconnection from the socket.io server
        *
        * @method disconnect
        */
-	    disconnect:function()
-	    {
-		    if (this.socket != undefined && !this.isConnected)
-		    {
+      disconnect: function ()
+      {
+        if (this.socket != undefined && !this.isConnected)
+        {
           try{
             this.socket.disconnect();
             this.isConnected = false;
@@ -109,7 +150,7 @@ Polymer 1.0 element for socket.io apis
             this.onError(error);
           }
         }
-	    },
+      },
 
     });
   </script>
