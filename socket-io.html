@@ -1,4 +1,4 @@
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./bower_components/polymer/polymer.html">
 <!--
 `socket-io`
 Polymer 1.0 element for socket.io apis
@@ -23,19 +23,6 @@ Polymer 1.0 element for socket.io apis
         isConnected: {
           type: Boolean,
           value: null
-        },
-        loaded: {
-          type: Function
-        },
-        /**
-         * Array with child objects - two properties.
-         * event (name of event to trigger on) and onEvent (a callback function).
-         */
-        events: {
-          type: Array,
-          value: [{ event: "onConnect", onEvent: function(data){
-            console.log("connected");
-          }}]
         }
       },
       ready: function(){
@@ -70,10 +57,6 @@ Polymer 1.0 element for socket.io apis
         // Use insertBefore instead of appendChild  to circumvent an IE6 bug.
         // This arises when a base node is used (#2709 and #4378).
         head.insertBefore( script, head.firstChild );
-
-        if(this.loaded){
-          this.loaded();
-        }
       },
       _getClientUrl: function (endpoint) {
         if (endpoint.slice(-1) === '/') {
@@ -121,13 +104,13 @@ Polymer 1.0 element for socket.io apis
         var _this = this;
         console.log('Connection in progress');
         if (this.scriptLoaded) {
-          console.log("Ok, connect the socket.");
           this.disconnect();
           this.socket = io.connect(this.endpoint);
           this.isConnected = true;
           this.events.forEach(function(event){
             _this.socket.on(event.event, event.onEvent);
           });
+          this.fire('connected');
         } else {
           console.log('Loading ClientSideScript');
           this.awaitingConnect = true;
