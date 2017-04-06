@@ -13,7 +13,7 @@
       initialise: function() {
         this._socketRef = document.querySelector('socket-io');
         console.log(document.querySelector('socket-io'));
-        if (this.socket._socketRef === null) {
+        if (this._socketRef === null) {
           console.log('Socket behavior was unable to find socket-io element');
         }
       },
