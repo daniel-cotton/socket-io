@@ -123,10 +123,12 @@ Polymer 1.0 element for socket.io apis
       registerEvents: function(events)
       {
         var ths = this;
-        events.forEach(function(event){
-          const index = (ths.events.push(event) - 1);
-          ths.socket.on(ths.events[index].event, ths.events[index].onEvent);
-        });
+        if (events && Array.isArray(events) && events.length > 0) {
+          events.forEach(function(event){
+            const index = (ths.events.push(event) - 1);
+            ths.socket.on(ths.events[index].event, ths.events[index].onEvent);
+          });
+        }
       },
     });
   </script>
