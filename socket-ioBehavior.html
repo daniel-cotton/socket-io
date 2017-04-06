@@ -2,14 +2,21 @@
   /** @polymerBehavior SocketIOBehavior */
   const SocketIOBehavior = {
     ready: function() {
-      this.socket._socketRef = document.querySelector('socket-io');
-      if (this.socket._socketRef === null) {
-        console.log('Socket behavior was unable to find socket-io element');
-      }
+      this.socket.initialise();
     },
 
     socket: {
       _socketRef: null,
+      /**
+       * 
+       */
+      initialise: function() {
+        this._socketRef = document.querySelector('socket-io');
+        console.log(document.querySelector('socket-io'));
+        if (this.socket._socketRef === null) {
+          console.log('Socket behavior was unable to find socket-io element');
+        }
+      },
       /**
        * The socket.connect method triggers connection to the socket.io server
        *
@@ -35,7 +42,12 @@
        * @param {function} eventArr[].onEvent - Function to be called when event is triggered
        */
       registerEvents: function(events) {
-        this._socketRef.registerEvents(events);
+        if (this._socketRef && events && Array.isArray(events) && events.length > 0) {
+          this._socketRef.registerEvents(events);
+        } else {
+          this.initialise();
+          this.registerEvents(events);
+        }
       },
       /**
        * The socket.emit method sends an event with 'payload' as content and allows optional compression
