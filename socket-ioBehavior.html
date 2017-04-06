@@ -43,10 +43,14 @@
        */
       registerEvents: function(events) {
         if (this._socketRef && events && Array.isArray(events) && events.length > 0) {
+          console.log("WE ACTUALLY MADE IT");
           this._socketRef.registerEvents(events);
         } else {
           this.initialise();
-          this.registerEvents(events);
+          let fn = this.registerEvents.bind(this);
+          setTimeout(function() {
+            fn(events)
+          }, 1000);
         }
       },
       /**
